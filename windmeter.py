@@ -12,7 +12,7 @@ def sec():
 def imp():
     return '*'
 
-period = 6000
+period = 6000  # за период от 6 мин
 i = 1
 time_int = 200
 interval = time_int
