@@ -108,7 +108,7 @@ def emulator():
 #print(wlan.scan())
 #print (rtc.datetime())
 print(rtc.datetime()[6])
-
+# Стартира от започването на следващата кръгла минута
 t = 60 - rtc.datetime()[6]
 time.sleep(t)
 emulator()
