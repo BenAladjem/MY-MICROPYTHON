@@ -1,6 +1,8 @@
 from machine import Pin
 import time
 
+# Управление на четири релета с комбинация от команди по три кабела
+
 p4 = Pin(4,Pin.OUT)
 p5 = Pin(5,Pin.OUT)
 p6 = Pin(6,Pin.OUT)
@@ -15,6 +17,11 @@ p5.value(0)
 p6.value(0)
 p7.value(0)
 
+def relay_work(relay):
+    relay.value(1)
+    time.sleep(1)
+    relay.value(0)
+
 def command_relay(num):
         
     p1.irq(handler=None)
@@ -27,30 +34,27 @@ def command_relay(num):
     print("P2 ",p2.value())
     print("P3 ",p3.value())
     
-    if p1.value() == 0 and p2.value == 1 and p3.value == 1:
-        print('p1')
-        p4.value(1)
-        time.sleep(1)
-        p4.value(0)
-    elif p1.value() == 0 and p2.value == 1 and p3.value == 0:
-        p5.value(1)
-        time.sleep(1)
-        p5.value(0)
-    elif p1.value() == 1 and p2.value == 0 and p3.value == 0:
-        p6.value(1)
-        time.sleep(1)
-        p6.value(0)
-    elif p1.value() == 0 and p2.value == 0 and p3.value == 0:
-        p7.value(1)
-        time.sleep(1)
-        p7.value(0)
+    if p1.value() == 0 and p2.value() == 1 and p3.value() == 1:
+        print('Relay1')
+        relay_work(p4)
+        
+    elif p1.value() == 0 and p2.value() == 1 and p3.value() == 0:
+        relay_work(p5)
+        print('Relay2')
+        
+    elif p1.value() == 1 and p2.value() == 0 and p3.value() == 0:
+        relay_work(p6)
+        
+    elif p1.value() == 0 and p2.value() == 0 and p3.value() == 0:
+        relay_work(p7)
+        
     
     p1.irq(handler=command_relay, trigger=Pin.IRQ_FALLING | Pin.IRQ_RISING)
     p2.irq(handler=command_relay, trigger=Pin.IRQ_FALLING | Pin.IRQ_RISING)
     p3.irq(handler=command_relay, trigger=Pin.IRQ_FALLING | Pin.IRQ_RISING)
 
 
-#print(dir(Pin))
+print(dir(Pin))
 p1.irq(handler=command_relay, trigger= Pin.IRQ_FALLING | Pin.IRQ_RISING)
 p2.irq(handler=command_relay, trigger= Pin.IRQ_FALLING | Pin.IRQ_RISING)
 p3.irq(handler=command_relay, trigger= Pin.IRQ_FALLING | Pin.IRQ_RISING)
